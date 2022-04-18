@@ -1,0 +1,45 @@
+{% extends 'partials/base.html' %}
+{% block title %} Chatboard {% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		<div class="card offset-2 mt-4">
+			
+		  <div class="card-body" style="width: 50rem; height: 400px; overflow-y: scroll;">
+		  	{% for c in chats %}
+		  	<h4>{{c.user.username}}</h4>
+		  	{% if c.user == request.user %}	
+		  	<a href="{% url 'users-chatboard-delete' c.id %}"><button class="btn btn-danger float-right">Delete</button></a>
+		  	{% endif %}
+		  	
+		  	
+		  	<p>{{c.content}}</p>
+		  	<small>{{c.created_at}}</small>
+
+		  	<hr>
+			
+			 
+		  	{% endfor %}  
+
+		  </div>
+
+		   <form method="POST" class="m-3">
+		  	{% csrf_token %}
+		  	{{form|crispy}}
+		  	
+		  	<input class="btn btn-primary btn-sm float-right" type="Submit">
+		  </form>
+		</div>
+		 
+		</div>	
+		</div>
+
+
+
+
+
+
+
+{% endblock %}

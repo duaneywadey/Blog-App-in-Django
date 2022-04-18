@@ -1,0 +1,46 @@
+<!-- We extend 'partials/base.html' file here
+ -->
+
+<!-- base.html has the Bootstrap CDN -->
+
+{% extends 'partials/base.html' %}
+{% block title %} Login Page {% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container cover">
+	<div class="row mt-2 pt-3">
+		<div class="col-md-5" style="float:none;margin:auto;">
+				
+			<div class="card my-3 shadow">
+				<div class="card-body">
+					<h4 style="text-align: center;">Login Page</h4>
+					<hr>
+					<form method="POST">
+						{% csrf_token %}
+						{{ form|crispy }}
+						<input class="btn btn-primary btn-block" type="submit" value="Login">
+					</form>	
+					<div class="text-center my-3">
+						<a href=""> Forget password?</a>						
+					</div>			
+					<hr>
+					<div class="text-center">
+						<a class="btn btn-success" href="{% url 'users-sign-up' %}" style="margin-top: 5px; ">Create an account </a>
+					</div>
+					
+				</div>
+			</div>
+			
+
+		</div>
+	</div>
+</div>
+
+<style>
+
+body {
+ 	background-image: url('https://source.unsplash.com/1600x900/?landscape');
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,106 @@
+<!-- We extend 'partials/base.html' file here
+ -->
+
+<!-- base.html has the Bootstrap CDN -->
+
+{% extends 'partials/base.html' %}
+{% block title %} Profile | {{request.user}} {% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+	<div class="row mt-2 pt-3">
+		<div class="col-md-8" style="float:none;margin:auto;">
+			<div class="card my-3 shadow">
+				<div class="card-body">
+					<span class="h4"> Profile page</span>
+					<span><button type="button" class="btn btn-info btn float-right" 	data-toggle="modal" data-target="#exampleModal">
+					  Edit profile
+					</button></span>
+					<hr>
+					<div class="row">
+						<div class="col-md-4">
+							<img class="img-thumbnail" src="{{ user.profilemodel.avatar.url }}" alt="profile.img">
+						</div>
+
+						<div class="col-md-8">
+							<p>Name: {{user.username}}</p>
+							<p>E-mail: {{user.email}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="col-md-10">
+	<div class="row mt-2 offset-3">
+			<h1 class="display-3">{{request.user}}'s Posts</h1>
+			{% for post in posts %}
+			<div class="card shadow my-3">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-4">
+							<img class="img-thumbnail" src="{{ post.author.profilemodel.avatar.url}}" alt="img">
+						</div>
+						<div class="col-md-8">
+							<h5>{{post.author}}</h5>
+							<small>{{post.date_created}}</small>
+							<hr>
+							<p class='text-justify my-3'style="font-size: 1em;">{{post.content}}</p>
+
+							{% if post.author == request.user %}
+							<a href="{% url 'blog-post-detail' post.id %}">Edit</a>
+							{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Profile Information</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	<div class="row">
+      		<div class="col-md-4">
+      			<img class="img-thumbnail" src="{{ user.profilemodel.avatar.url }}" alt="profile.img">
+      		</div>
+      		<div class="col-md-8">
+      			<form method="POST" enctype="multipart/form-data">
+      				{% csrf_token %}
+      				{{u_form|crispy}}
+      				{{p_form|crispy}}
+
+      			<div class="modal-footer">
+			        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+			        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+			    </div>
+		
+      			</form>
+      		</div>
+      	</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+
+
